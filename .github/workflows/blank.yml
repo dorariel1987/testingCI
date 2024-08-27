@@ -1,0 +1,26 @@
+name: Build C++ Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history is needed for some operations
+      
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+        
+      - name: Build with MSBuild
+        run: |
+          msbuild Binary.sln /p:Configuration=Release /filelogger
